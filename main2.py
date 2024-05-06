@@ -1,57 +1,71 @@
+"""
+bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=50, detectShadows=False)
+
+
+cap = cv2.VideoCapture(0) 
+
+while True:
+
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+
+    fg_mask = bg_subtractor.apply(frame)
+    
+    #nalezaní kontur
+    contours, _ = cv2.findContours(fg_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    
+
+
+
+
+    cv2.imshow('Frame', frame)
+    cv2.imshow('Foreground Mask', fg_mask)
+    
+
+    if cv2.waitKey(30) & 0xFF == ord('q'):
+        break
+
+
+cap.release()
+cv2.destroyAllWindows()
+"""
+
 import cv2
 import numpy as np
 import tensorflow as tf
 
-# Načtení natrénovaného modelu
-model = tf.keras.models.load_model("trained_model.h5")
 
-# Inicializace kamery
-cap = cv2.VideoCapture(0)  # 0 pro výběr první kamery, můžete změnit podle potřeby
+def recognizer():
 
-while True:
-    # Načtení snímku z kamery
-    ret, frame = cap.read()
-    if not ret:
-        break
+    cap = cv2.VideoCapture(0)
 
-    # Změna velikosti snímku na 200x200 pixelů, kterou vyžaduje váš model
-    frame_resized = cv2.resize(frame, (200, 200))
+    liver_cascade = cv2.CascadeClassifier("/Users/Adela/Desktop/data/classifier/cascade.xml")
 
-    # Předzpracování snímku - normalizace pixelů do rozsahu 0-1
-    frame_resized = frame_resized / 255.0
+    while True:
+        ret, frame = cap.read()  
 
-    # Rozšíření dimenze snímku pro predikci pomocí modelu
-    frame_expanded = np.expand_dims(frame_resized, axis=0)
+        liver = liver_cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5, minSize=(40, 40))
 
-    # Provádění predikce na snímku pomocí modelu
-    prediction = model.predict(frame_expanded)
+        for (x, y, w, h) in liver:
 
-    # Získání výsledné třídy (0 nebo 1) a pravděpodobnosti
-    predicted_class = int(np.round(prediction)[0][0])
-    probability = prediction[0][0]
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            face = frame[y:y+h, x:x+w]
+            face = cv2.resize(face,(400,200))
+            face = face / 255.0
+            face = np.expand_dims(face, axis=0)
 
-   # Zobrazení výsledků na snímku
-    if predicted_class == 1:
-        cv2.putText(frame, "Jatra nalezena (pravděpodobnost: {:.2f})".format(probability), (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-        
-        # Získání souřadnic detekovaných jater a jejich velikosti
-        x, y, w, h = 50, 50, 100, 100  # Nahraďte těmito hodnotami souřadnic a velikostí, které odpovídají vašim detekcím jater
-        
-        # Vykreslení čtverce kolem detekovaných jater
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        
-    else:
-        cv2.putText(frame, "Jatra nenalezena (pravděpodobnost: {:.2f})".format(probability), (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
-    # Zobrazení snímku
-    cv2.imshow("Liver Detection", frame)
 
-    # Ukončení smyčky, pokud uživatel stiskne klávesu 'q'
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        cv2.imshow("Live Detekce", frame)
 
-# Uvolnění kamery a zavření všech otevřených oken
-cap.release()
-cv2.destroyAllWindows()
 
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+recognizer()
