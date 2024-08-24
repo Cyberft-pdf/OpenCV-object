@@ -5,7 +5,7 @@ This Python program integrates computer vision, object detection and segmentatio
 (TensorFlow, gradio, numpy, matplotlib, icrawler(BingImageCrawler))
 
 <h3>How does it work?</h3>
-How did I mentioned this code works on Python with OpenCV and TesorFlow. Firstly my task was to detect liver during surgery in augmented reality(AR). This is difficult task because of similarities in background(everything is pink and red including the liver). 
+How did I mentioned this code works on Python with OpenCV and TesorFlow. Firstly my task was to detect liver during surgery in augmented reality (AR). This is difficult task because of similarities in background (everything is pink and red including the liver). 
 To fix this problem we have 3 options:
 <br>
 <br>
@@ -18,7 +18,7 @@ To fix this problem we have 3 options:
     <li>Filter colors</li>
 </ul>
 
-I tried everyone of them and i was not successful, these codes are mess of everything.
+I tried everyone of them and I was not successful, these codes are just one of first ideas how it could work (mess of everything).
 
 Although I was not successful, I learned a lot
 
