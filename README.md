@@ -18,13 +18,11 @@ To fix this problem we have 3 options:
     <li>Filter colors</li>
 </ul>
 
-I tried everyone of them and i was not successful, this codes are mess of everything.
+I tried everyone of them and i was not successful, these codes are mess of everything.
 
-Even I was not successful, I still learned a lot
+Although I was not successful, I learned a lot
 
-
-
-
+maybe this will help someone
 
 
 
