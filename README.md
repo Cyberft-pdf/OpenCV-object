@@ -18,6 +18,9 @@ To fix this problem we have 3 options:
     <li>Filter colors</li>
 </ul>
 
+I tried everyone of them and i was not successful, this codes are mess of everything.
+
+Even I was not successful, I still learned a lot
 
 
 
@@ -29,7 +32,3 @@ To fix this problem we have 3 options:
 
 
 
-
-
-
-haar cascade 3D convolutional neural network
